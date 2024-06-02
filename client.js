@@ -10,10 +10,6 @@ const server = http.createServer((req, res) => {
       res.setHeader('Content-Type', 'text/html');
 
       const serverFunc = async () => {
-        console.log('hello from server');
-        const serverAPIroute = await fetch('http://localhost:3000/api/joke');
-        const joke = await serverAPIroute.json();
-
         const htmlContent = `
           <!DOCTYPE html>
           <html lang="en">
@@ -21,17 +17,18 @@ const server = http.createServer((req, res) => {
               <meta charset="UTF-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <script src="https://cdn.tailwindcss.com"></script>
-              <title>Server Example</title>
+              <title>Client Example</title>
             </head>
             <body class="w-full h-screen flex flex-col justify-center items-center">
-              <div class="hidden">
-                <pre>${JSON.stringify(joke, null, 2)}</pre>
-              </div>
+              <pre></pre>
               <button id="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Fetch</button>
               <script>
                 const button = document.querySelector('#button');
-                button.addEventListener('click', () => {
-                  document.querySelector('div').classList.remove('hidden');
+                button.addEventListener('click', async () => {
+                  console.log('hello from client');
+                  const response = await fetch('http://localhost:3000/api/joke');
+                  const joke = await response.json();
+                  document.querySelector('pre').innerText = JSON.stringify(joke, null, 2);
                 });
               </script>
             </body>
